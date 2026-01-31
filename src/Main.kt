@@ -3,6 +3,8 @@ import modules.ResearchLab
 import modules.ModuleResult
 import resources.OutpostResource
 import resources.ResourceManager
+import resources.*
+import modules.*
 /*fun characters.characters.resources.main(){
     val manager = resources.ResourceManager()
     val minerals = resources.OutpostResource(1,"Minerals", 300)
@@ -55,6 +57,20 @@ fun characters.characters.resources.main() {
 }*/
 
 
+object SystemLogger {
+    init {
+        println("SystemLogger инициализирован")
+    }
+
+    fun log(message: String) {
+        println("[LOG] $message")
+    }
+}
+
+val logger by lazy {
+    SystemLogger
+}
+
 fun handleModuleResult(result: ModuleResult) {
     when (result) {
         is ModuleResult.Success -> println("УСПЕХ: ${result.message}")
@@ -65,10 +81,12 @@ fun handleModuleResult(result: ModuleResult) {
 }
 
 fun main() {
+    val loadedResources = FileStorage.load()
     val manager = ResourceManager()
+    loadedResources.forEach { manager.add(it)
 
-    manager.add(OutpostResource(id = 1, name = "Minerals", amount = 300))
-    manager.add(OutpostResource(id = 2, name = "Gas", amount = 100))
+    manager.add(OutpostResource(id = 1, name = "Minerals", amountInit = 300))
+    manager.add(OutpostResource(id = 2, name = "Gas", amountInit = 100))
 
     val generator = EnergyGenerator()
     val lab = ResearchLab()
@@ -83,4 +101,9 @@ fun main() {
     println("Ресурсы базы:")
     manager.printAll()
 }
+    if (loadedResources.isEmpty()) {
+        manager.add(OutpostResource(id = 1, name = "Minerals", amountInit = 300))
+        manager.add(OutpostResource(id = 2, name = "Gas", amountInit = 100))}
+    FileStorage.save(resources = manager.getAll())}
+
 

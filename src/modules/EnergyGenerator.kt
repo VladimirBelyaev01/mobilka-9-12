@@ -8,7 +8,7 @@ class EnergyGenerator : OutpostModule(name = "Генератор энергии"
         println("Генератор работает... Производит 20 энергии")
         val energy = manager.get("Energy")
         return if (energy != null) {
-            energy.amount += 20
+            energy.amountInit += 20
             ModuleResult.ResourceProduced("Energy", 20)
         } else {
             manager.add(OutpostResource(99, "Energy", 20))
